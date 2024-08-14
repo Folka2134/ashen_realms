@@ -28,11 +28,6 @@ public class GamePanel extends JPanel implements Runnable {
 
   Player folka = new Player(this, keyH);
 
-  // Player's default position
-  int playerX = 100;
-  int playerY = 100;
-  int playerSpeed = 4;
-
   public GamePanel() {
     this.setPreferredSize(new Dimension(screenWidth, screenHeight));
     this.setBackground(Color.black);
@@ -73,7 +68,7 @@ public class GamePanel extends JPanel implements Runnable {
 
       if (timer >= 1000000000) {
         // display fps
-        // System.out.println("FPS:" + drawCount);
+        System.out.println("FPS:" + drawCount);
         drawCount = 0;
         timer = 0;
       }
