@@ -9,53 +9,17 @@ import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 
 import com.folkadev.GamePanel;
+import com.folkadev.UtilityTool;
 
 public class TileManager {
   GamePanel gp;
   Tile[] tile;
   int mapDataSize[][];
-  private String[] tilePaths = {
-      "/images/tiles/earth.png", // 0
-      "/images/tiles/floor01.png", // 1
-      "/images/tiles/grass00.png", // 2
-      "/images/tiles/grass01.png", // 3
-      "/images/tiles/hut.png", // 4
-      "/images/tiles/road00.png", // 5
-      "/images/tiles/road01.png", // 6
-      "/images/tiles/road02.png", // 7
-      "/images/tiles/road03.png", // 8
-      "/images/tiles/road04.png", // 9
-      "/images/tiles/road05.png", // 10
-      "/images/tiles/road06.png", // 11
-      "/images/tiles/road07.png", // 12
-      "/images/tiles/road08.png", // 13
-      "/images/tiles/road09.png", // 14
-      "/images/tiles/road10.png", // 15
-      "/images/tiles/road11.png", // 16
-      "/images/tiles/road12.png", // 17
-      "/images/tiles/table01.png", // 18
-      "/images/tiles/tree.png", // 19
-      "/images/tiles/wall.png", // 20
-      "/images/tiles/water00.png", // 21
-      "/images/tiles/water01.png", // 22
-      "/images/tiles/water02.png", // 23
-      "/images/tiles/water03.png", // 24
-      "/images/tiles/water04.png", // 25
-      "/images/tiles/water05.png", // 26
-      "/images/tiles/water06.png", // 27
-      "/images/tiles/water07.png", // 28
-      "/images/tiles/water08.png", // 29
-      "/images/tiles/water09.png", // 30
-      "/images/tiles/water10.png", // 31
-      "/images/tiles/water11.png", // 32
-      "/images/tiles/water12.png", // 33
-      "/images/tiles/water13.png" // 34
-  };
 
   public TileManager(GamePanel gp) {
     this.gp = gp;
 
-    tile = new Tile[tilePaths.length];
+    tile = new Tile[100];
     mapDataSize = new int[gp.maxWorldCol][gp.maxWorldRow];
 
     getTileImage();
@@ -64,14 +28,69 @@ public class TileManager {
   }
 
   public void getTileImage() {
-    for (int i = 0; i < tilePaths.length; i++) {
-      try {
-        tile[i] = new Tile();
-        tile[i].image = ImageIO.read(getClass().getResourceAsStream(tilePaths[i]));
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+    setup("00", "earth", false);
+    setup("01", "floor01", false);
+    setup("02", "grass00", false);
+    setup("03", "grass01", false);
+    setup("04", "hut", true);
+    setup("05", "road00", false);
+    setup("06", "road01", false);
+    setup("07", "road02", false);
+    setup("08", "road03", false);
+    setup("09", "road04", false);
+    setup("10", "road05", false);
+    setup("11", "road06", false);
+    setup("12", "road07", false);
+    setup("13", "road08", false);
+    setup("14", "road09", false);
+    setup("15", "road10", false);
+    setup("16", "road11", false);
+    setup("17", "road12", false);
+    setup("18", "table01", true);
+    setup("19", "tree", true);
+    setup("20", "wall", true);
+    setup("21", "water00", true);
+    setup("22", "water01", true);
+    setup("23", "water02", true);
+    setup("24", "water03", true);
+    setup("25", "water04", true);
+    setup("26", "water05", true);
+    setup("27", "water06", true);
+    setup("28", "water07", true);
+    setup("29", "water08", true);
+    setup("30", "water09", true);
+    setup("31", "water10", true);
+    setup("32", "water11", true);
+    setup("33", "water12", true);
+    setup("34", "water13", true);
+  }
+
+  public void setup(String str, String imageName, boolean collision) {
+    UtilityTool uTool = new UtilityTool();
+    try {
+      // CONVERT STRING TO INDEX
+      int num = convertStrIndex(str);
+      tile[num] = new Tile();
+      tile[num].image = ImageIO.read(getClass().getResourceAsStream("/images/tiles/" + imageName + ".png"));
+      tile[num].image = uTool.scaleImage(tile[num].image, gp.tileSize, gp.tileSize);
+      tile[num].collision = collision;
+
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+  }
+
+  public int convertStrIndex(String str) {
+    int result = 0;
+    String num;
+
+    if (str.charAt(0) == '0') {
+      num = String.valueOf(str.charAt(1));
+      result = Integer.parseInt(num);
+    } else {
+      result = Integer.parseInt(str);
+    }
+    return result;
   }
 
   public void loadMapData(String filePath) {
@@ -104,25 +123,57 @@ public class TileManager {
   }
 
   public void draw(Graphics2D g2) {
-    // DRAW MAP
     int worldCol = 0;
     int worldRow = 0;
 
+    // DRAW MAP
     while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 
-      int tileNum = mapDataSize[worldCol][worldRow];
+      while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 
-      int worldX = worldCol * gp.tileSize;
-      int worldY = worldRow * gp.tileSize;
-      int screenX = worldX - gp.player.worldX + gp.player.screenX;
-      int screenY = worldY - gp.player.worldY + gp.player.screenY;
+        int tileNum = mapDataSize[worldCol][worldRow];
 
-      g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-      worldCol++;
+        int worldX = worldCol * gp.tileSize;
+        int worldY = worldRow * gp.tileSize;
+        int screenX = worldX - gp.player.worldX + gp.player.screenX;
+        int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-      if (worldCol == gp.maxWorldCol) {
-        worldCol = 0;
-        worldRow++;
+        // Stop moving camera at the edge
+        if (gp.player.screenX > gp.player.worldX) {
+          screenX = worldX;
+        }
+
+        if (gp.player.screenY > gp.player.worldY) {
+          screenY = worldY;
+        }
+
+        int rightOffset = gp.screenWidth - gp.player.screenX;
+        if (rightOffset > gp.worldWidth - gp.player.worldX) {
+          screenX = gp.screenWidth - (gp.worldWidth - worldX);
+        }
+        int bottomOffset = gp.screenHeight - gp.player.screenY;
+        if (bottomOffset > gp.worldHeight - gp.player.worldY) {
+          screenY = gp.screenHeight - (gp.worldHeight - worldY);
+        }
+
+        if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+            worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+            worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+            worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+          g2.drawImage(tile[tileNum].image, screenX, screenY, null);
+        } else if (gp.player.screenX > gp.player.worldX ||
+            gp.player.screenY > gp.player.worldY ||
+            rightOffset > gp.worldWidth - gp.player.worldX ||
+            bottomOffset > gp.worldHeight - gp.player.worldY) {
+          g2.drawImage(tile[tileNum].image, screenX, screenY, null);
+        }
+
+        worldCol++;
+
+        if (worldCol == gp.maxWorldCol) {
+          worldCol = 0;
+          worldRow++;
+        }
       }
     }
   }
