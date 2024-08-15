@@ -13,84 +13,54 @@ import com.folkadev.GamePanel;
 public class TileManager {
   GamePanel gp;
   Tile[] tile;
-  int mapData[][];
+  int mapDataSize[][];
   private String[] tilePaths = {
-      // 0
-      "/images/tiles/earth.png",
-      // 1
-      "/images/tiles/floor01.png",
-      // 2
-      "/images/tiles/grass00.png",
-      // 3
-      "/images/tiles/grass01.png",
-      // 4
-      "/images/tiles/hut.png",
-      // 5
-      "/images/tiles/road01.png",
-      // 6
-      "/images/tiles/road02.png",
-      // 7
-      "/images/tiles/road03.png",
-      // 8
-      "/images/tiles/road04.png",
-      // 9
-      "/images/tiles/road05.png",
-      // 10
-      "/images/tiles/road06.png",
-      // 11
-      "/images/tiles/road07.png",
-      // 12
-      "/images/tiles/road08.png",
-      // 13
-      "/images/tiles/road09.png",
-      // 14
-      "/images/tiles/road10.png",
-      // 15
-      "/images/tiles/road11.png",
-      // 16
-      "/images/tiles/road12.png",
-      // 17
-      "/images/tiles/tree.png",
-      // 18
-      "/images/tiles/wall.png",
-      // 19
-      "/images/tiles/water00.png",
-      // 20
-      "/images/tiles/water01.png",
-      // 21
-      "/images/tiles/water02.png",
-      // 22
-      "/images/tiles/water03.png",
-      // 23
-      "/images/tiles/water04.png",
-      // 24
-      "/images/tiles/water05.png",
-      // 25
-      "/images/tiles/water06.png",
-      // 26
-      "/images/tiles/water07.png",
-      // 27
-      "/images/tiles/water08.png",
-      // 28
-      "/images/tiles/water09.png",
-      // 29
-      "/images/tiles/water10.png",
-      // 30
-      "/images/tiles/water11.png",
-      // 31
-      "/images/tiles/water12.png",
-      // 32
-      "/images/tiles/water13.png"
+      "/images/tiles/earth.png", // 0
+      "/images/tiles/floor01.png", // 1
+      "/images/tiles/grass00.png", // 2
+      "/images/tiles/grass01.png", // 3
+      "/images/tiles/hut.png", // 4
+      "/images/tiles/road00.png", // 5
+      "/images/tiles/road01.png", // 6
+      "/images/tiles/road02.png", // 7
+      "/images/tiles/road03.png", // 8
+      "/images/tiles/road04.png", // 9
+      "/images/tiles/road05.png", // 10
+      "/images/tiles/road06.png", // 11
+      "/images/tiles/road07.png", // 12
+      "/images/tiles/road08.png", // 13
+      "/images/tiles/road09.png", // 14
+      "/images/tiles/road10.png", // 15
+      "/images/tiles/road11.png", // 16
+      "/images/tiles/road12.png", // 17
+      "/images/tiles/table01.png", // 18
+      "/images/tiles/tree.png", // 19
+      "/images/tiles/wall.png", // 20
+      "/images/tiles/water00.png", // 21
+      "/images/tiles/water01.png", // 22
+      "/images/tiles/water02.png", // 23
+      "/images/tiles/water03.png", // 24
+      "/images/tiles/water04.png", // 25
+      "/images/tiles/water05.png", // 26
+      "/images/tiles/water06.png", // 27
+      "/images/tiles/water07.png", // 28
+      "/images/tiles/water08.png", // 29
+      "/images/tiles/water09.png", // 30
+      "/images/tiles/water10.png", // 31
+      "/images/tiles/water11.png", // 32
+      "/images/tiles/water12.png", // 33
+      "/images/tiles/water13.png" // 34
   };
 
   public TileManager(GamePanel gp) {
     this.gp = gp;
 
     tile = new Tile[tilePaths.length];
-    mapData = new int[gp.maxScreenCol][gp.maxScreenRow];
+    mapDataSize = new int[gp.maxWorldCol][gp.maxWorldRow];
 
     getTileImage();
-    loadMapData("/map/mapData1.txt");
+    loadMapData("/map/world01.txt");
+    // loadMapData("/map/worldV2.txt");
   }
 
   public void getTileImage() {
@@ -112,16 +82,16 @@ public class TileManager {
       int col = 0;
       int row = 0;
 
-      while (col < gp.maxScreenCol && row < gp.maxScreenRow) {
+      while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
         String line = br.readLine();
-        while (col < gp.maxScreenCol) {
+        while (col < gp.maxWorldCol) {
           String numbers[] = line.split(" ");
 
           int num = Integer.parseInt(numbers[col]);
-          mapData[col][row] = num;
+          mapDataSize[col][row] = num;
           col++;
         }
-        if (col == gp.maxScreenCol) {
+        if (col == gp.maxWorldCol) {
           col = 0;
           row++;
         }
@@ -134,25 +104,25 @@ public class TileManager {
   }
 
   public void draw(Graphics2D g2) {
-    int col = 0;
-    int row = 0;
-    int x = 0;
-    int y = 0;
+    // DRAW MAP
+    int worldCol = 0;
+    int worldRow = 0;
 
-    // draw environment
-    while (col < gp.maxScreenCol && row < gp.maxScreenRow) {
+    while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 
-      int tileNum = mapData[col][row];
+      int tileNum = mapDataSize[worldCol][worldRow];
 
-      g2.drawImage(tile[tileNum].image, x, y, gp.tileSize, gp.tileSize, null);
-      col++;
-      x += gp.tileSize;
+      int worldX = worldCol * gp.tileSize;
+      int worldY = worldRow * gp.tileSize;
+      int screenX = worldX - gp.player.worldX + gp.player.screenX;
+      int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-      if (col == gp.maxScreenCol) {
-        col = 0;
-        x = 0;
-        row++;
-        y += gp.tileSize;
+      g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+      worldCol++;
+
+      if (worldCol == gp.maxWorldCol) {
+        worldCol = 0;
+        worldRow++;
       }
     }
   }

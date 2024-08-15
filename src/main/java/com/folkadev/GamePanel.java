@@ -12,22 +12,29 @@ import com.folkadev.tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
 
+  // SCREEN SETTINGS
   final int originalTileSize = 16; // 16 * 16
   final int scale = 3;
-
   public final int tileSize = originalTileSize * scale;
   public final int maxScreenCol = 16;
   public final int maxScreenRow = 12;
   public final int screenWidth = tileSize * maxScreenCol;
   public final int screenHeight = tileSize * maxScreenRow;
 
+  // WORLD SETTINGS
+  public final int maxWorldCol = 50;
+  public final int maxWorldRow = 50;
+  public final int worldWidth = tileSize * maxWorldCol;
+  public final int worldHeight = tileSize * maxWorldRow;
+
+  // FPS
   final int FPS = 60;
 
   Thread gameThread;
 
   TileManager tileManager = new TileManager(this);
   KeyHandler keyH = new KeyHandler();
-  Player folka = new Player(this, keyH);
+  public Player player = new Player(this, keyH);
 
   public GamePanel() {
     this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -50,35 +57,34 @@ public class GamePanel extends JPanel implements Runnable {
     double delta = 0;
     long lastTime = System.nanoTime();
     long currentTime;
-    long timer = 0;
-    long drawCount = 0;
+    // long timer = 0;
+    // long drawCount = 0;
 
     while (gameThread != null) {
 
       currentTime = System.nanoTime();
-
       delta += (currentTime - lastTime) / drawInterval;
-      timer += (currentTime - lastTime);
+      // timer += (currentTime - lastTime);
       lastTime = currentTime;
       if (delta >= 1) {
-        update();
-        repaint();
+        update(); // UPDATE GAMESTATE
+        repaint(); // DRAW GAMESTATE
         delta--;
-        drawCount++;
+        // drawCount++;
       }
 
-      if (timer >= 1000000000) {
-        // display fps
-        System.out.println("FPS:" + drawCount);
-        drawCount = 0;
-        timer = 0;
-      }
+      // if (timer >= 1000000000) {
+      // // display fps
+      // System.out.println("FPS:" + drawCount);
+      // drawCount = 0;
+      // timer = 0;
+      // }
     }
 
   }
 
   public void update() {
-    folka.update();
+    player.update();
   }
 
   public void paintComponent(Graphics g) {
@@ -88,7 +94,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Draw to panel
     tileManager.draw(g2);
-    folka.draw(g2);
+    player.draw(g2);
 
     g2.dispose();
   }
