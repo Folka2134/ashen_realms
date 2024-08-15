@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import com.folkadev.entity.Player;
+import com.folkadev.tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -15,17 +16,17 @@ public class GamePanel extends JPanel implements Runnable {
   final int scale = 3;
 
   public final int tileSize = originalTileSize * scale;
-  final int maxScreenCol = 16;
-  final int maxScreenRow = 12;
-  final int screenWidth = tileSize * maxScreenCol;
-  final int screenHeight = tileSize * maxScreenRow;
+  public final int maxScreenCol = 16;
+  public final int maxScreenRow = 12;
+  public final int screenWidth = tileSize * maxScreenCol;
+  public final int screenHeight = tileSize * maxScreenRow;
 
   final int FPS = 60;
 
-  KeyHandler keyH = new KeyHandler();
-
   Thread gameThread;
 
+  TileManager tileManager = new TileManager(this);
+  KeyHandler keyH = new KeyHandler();
   Player folka = new Player(this, keyH);
 
   public GamePanel() {
@@ -85,6 +86,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     Graphics2D g2 = (Graphics2D) g;
 
+    // Draw to panel
+    tileManager.draw(g2);
     folka.draw(g2);
 
     g2.dispose();
