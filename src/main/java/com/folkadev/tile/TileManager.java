@@ -12,15 +12,15 @@ import com.folkadev.GamePanel;
 import com.folkadev.UtilityTool;
 
 public class TileManager {
+  public Tile[] tile;
+  public int mapTileNum[][];
   GamePanel gp;
-  Tile[] tile;
-  int mapDataSize[][];
 
   public TileManager(GamePanel gp) {
     this.gp = gp;
 
     tile = new Tile[100];
-    mapDataSize = new int[gp.maxWorldCol][gp.maxWorldRow];
+    mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
     getTileImage();
     loadMapData("/map/world01.txt");
@@ -107,7 +107,7 @@ public class TileManager {
           String numbers[] = line.split(" ");
 
           int num = Integer.parseInt(numbers[col]);
-          mapDataSize[col][row] = num;
+          mapTileNum[col][row] = num;
           col++;
         }
         if (col == gp.maxWorldCol) {
@@ -131,7 +131,7 @@ public class TileManager {
 
       while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 
-        int tileNum = mapDataSize[worldCol][worldRow];
+        int tileNum = mapTileNum[worldCol][worldRow];
 
         int worldX = worldCol * gp.tileSize;
         int worldY = worldRow * gp.tileSize;

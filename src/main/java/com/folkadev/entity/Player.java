@@ -1,6 +1,7 @@
 package com.folkadev.entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -20,9 +21,18 @@ public class Player extends Entity {
   public Player(GamePanel gp, KeyHandler keyH) {
     this.gp = gp;
     this.keyH = keyH;
+
     // PLAYER POSITION
     screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
     screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+
+    // OBJECT COLLISION
+    collisionArea = new Rectangle();
+    collisionArea.x = 8;
+    collisionArea.y = 16;
+    collisionArea.width = 32;
+    collisionArea.height = 32;
+
     setDefaultValues();
     getPlayerImage();
   }
@@ -56,16 +66,33 @@ public class Player extends Entity {
     if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
       if (keyH.upPressed == true) {
         direction = "up";
-        worldY -= speed;
       } else if (keyH.downPressed == true) {
         direction = "down";
-        worldY += speed;
       } else if (keyH.leftPressed == true) {
         direction = "left";
-        worldX -= speed;
       } else if (keyH.rightPressed == true) {
         direction = "right";
-        worldX += speed;
+      }
+
+      // Check tile collision
+      collisionOn = false;
+      gp.collisionChecker.checkTile(this);
+
+      if (collisionOn == false) {
+        switch (direction) {
+          case "up":
+            worldY -= speed;
+            break;
+          case "down":
+            worldY += speed;
+            break;
+          case "left":
+            worldX -= speed;
+            break;
+          case "right":
+            worldX += speed;
+            break;
+        }
       }
 
       spriteCounter++;
