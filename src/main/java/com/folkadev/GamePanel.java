@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import com.folkadev.entity.Player;
+import com.folkadev.object.SuperObject;
 import com.folkadev.tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -34,8 +35,10 @@ public class GamePanel extends JPanel implements Runnable {
 
   TileManager tileManager = new TileManager(this);
   KeyHandler keyH = new KeyHandler();
+  public AssetSetter assetSetter = new AssetSetter(this);
   public CollisionChecker collisionChecker = new CollisionChecker(this);
   public Player player = new Player(this, keyH);
+  public SuperObject obj[] = new SuperObject[10];
 
   public GamePanel() {
     this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -43,6 +46,10 @@ public class GamePanel extends JPanel implements Runnable {
     this.setDoubleBuffered(true);
     this.addKeyListener(keyH);
     this.setFocusable(true);
+  }
+
+  public void setupGame() {
+    assetSetter.setObject();
   }
 
   public void startGameThread() {
@@ -93,8 +100,15 @@ public class GamePanel extends JPanel implements Runnable {
 
     Graphics2D g2 = (Graphics2D) g;
 
-    // Draw to panel
+    // Draw tiles
     tileManager.draw(g2);
+    // Draw object
+    for (int i = 0; i < obj.length; i++) {
+      if (obj[i] != null) {
+        obj[i].draw(g2, this);
+      }
+    }
+    // Draw player
     player.draw(g2);
 
     g2.dispose();
