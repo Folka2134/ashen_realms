@@ -29,9 +29,9 @@ public class Player extends Entity {
     // OBJECT COLLISION
     collisionArea = new Rectangle();
     collisionArea.x = 8;
-    collisionArea.y = 16;
-    collisionArea.width = 32;
-    collisionArea.height = 32;
+    collisionArea.y = 20;
+    collisionArea.width = 24;
+    collisionArea.height = 24;
 
     setDefaultValues();
     getPlayerImage();
