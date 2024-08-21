@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.folkadev.GamePanel;
+import com.folkadev.UtilityTool;
 
 public abstract class SuperObject {
   public BufferedImage image;
@@ -14,6 +15,8 @@ public abstract class SuperObject {
   public Rectangle collisionArea = new Rectangle(0, 0, 48, 48);
   public int collisionAreaDefaultX = 0;
   public int collisionAreaDefaultY = 0;
+
+  UtilityTool uTool = new UtilityTool();
 
   public void draw(Graphics2D g2, GamePanel gp) {
     int screenX = worldX - gp.player.worldX + gp.player.screenX;

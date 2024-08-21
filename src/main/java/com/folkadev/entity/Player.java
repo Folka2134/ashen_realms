@@ -156,7 +156,7 @@ public class Player extends Entity {
           break;
         case "Chest_Closed":
           gp.obj[index] = null;
-          gp.obj[3] = new Obj_Chest_Open();
+          gp.obj[3] = new Obj_Chest_Open(gp);
           gp.obj[3].worldX = 10 * gp.tileSize;
           gp.obj[3].worldY = 7 * gp.tileSize;
           gp.ui.gameFinished = true;
