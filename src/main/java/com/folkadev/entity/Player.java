@@ -14,9 +14,9 @@ public class Player extends Entity {
 
   GamePanel gp;
   KeyHandler keyH;
-
   public final int screenX;
   public final int screenY;
+  int keys = 0;
 
   public Player(GamePanel gp, KeyHandler keyH) {
     this.gp = gp;
@@ -30,6 +30,8 @@ public class Player extends Entity {
     collisionArea = new Rectangle();
     collisionArea.x = 8;
     collisionArea.y = 20;
+    collisionAreaDefaultX = collisionArea.x;
+    collisionAreaDefaultY = collisionArea.y;
     collisionArea.width = 24;
     collisionArea.height = 24;
 
@@ -78,6 +80,10 @@ public class Player extends Entity {
       collisionOn = false;
       gp.collisionChecker.checkTile(this);
 
+      // Check object collision
+      int objIndex = gp.collisionChecker.checkObject(this, true);
+      pickUpObject(objIndex);
+
       if (collisionOn == false) {
         switch (direction) {
           case "up":
@@ -103,6 +109,26 @@ public class Player extends Entity {
           spriteNum = 1;
         }
         spriteCounter = 0;
+      }
+    }
+  }
+
+  public void pickUpObject(int index) {
+    if (index != 999) {
+      String objectName = gp.obj[index].name;
+      switch (objectName) {
+        case "Key":
+          keys++;
+          gp.obj[index] = null;
+          System.out.println("Keys: " + keys);
+          break;
+        case "Iron Door":
+          if (keys > 0) {
+            gp.obj[index] = null;
+            keys--;
+          }
+          System.out.println("Keys: " + keys);
+          break;
       }
     }
   }

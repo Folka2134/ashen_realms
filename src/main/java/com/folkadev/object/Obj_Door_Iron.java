@@ -11,5 +11,6 @@ public class Obj_Door_Iron extends SuperObject {
     } catch (Exception e) {
       // TODO: handle exception
     }
+    collision = true;
   }
 }
