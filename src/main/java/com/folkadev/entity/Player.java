@@ -18,7 +18,7 @@ public class Player extends Entity {
   KeyHandler keyH;
   public final int screenX;
   public final int screenY;
-  public int keys = 0;
+  // public int keys = 0;
   int idleCounter = 0;
 
   public Player(GamePanel gp, KeyHandler keyH) {
@@ -133,35 +133,35 @@ public class Player extends Entity {
 
   public void pickUpObject(int index) {
     if (index != 999) {
-      String objectName = gp.obj[index].name;
-      switch (objectName) {
-        case "Key":
-          keys++;
-          gp.obj[index] = null;
-          gp.ui.displayMessage("Rusty key found");
-          break;
-        case "Iron Door":
-          if (keys > 0) {
-            gp.obj[index] = null;
-            keys--;
-            gp.ui.displayMessage("Key used");
-          } else {
-            gp.ui.displayMessage("It's locked");
-          }
-          break;
-        case "Boots":
-          speed += 2;
-          gp.obj[index] = null;
-          gp.ui.displayMessage("Speed Boots equipped");
-          break;
-        case "Chest_Closed":
-          gp.obj[index] = null;
-          gp.obj[3] = new Obj_Chest_Open(gp);
-          gp.obj[3].worldX = 10 * gp.tileSize;
-          gp.obj[3].worldY = 7 * gp.tileSize;
-          gp.ui.gameFinished = true;
-          break;
-      }
+      // String objectName = gp.obj[index].name;
+      // switch (objectName) {
+      // case "Key":
+      // keys++;
+      // gp.obj[index] = null;
+      // gp.ui.displayMessage("Rusty key found");
+      // break;
+      // case "Iron Door":
+      // if (keys > 0) {
+      // gp.obj[index] = null;
+      // keys--;
+      // gp.ui.displayMessage("Key used");
+      // } else {
+      // gp.ui.displayMessage("It's locked");
+      // }
+      // break;
+      // case "Boots":
+      // speed += 2;
+      // gp.obj[index] = null;
+      // gp.ui.displayMessage("Speed Boots equipped");
+      // break;
+      // case "Chest_Closed":
+      // gp.obj[index] = null;
+      // gp.obj[3] = new Obj_Chest_Open(gp);
+      // gp.obj[3].worldX = 10 * gp.tileSize;
+      // gp.obj[3].worldY = 7 * gp.tileSize;
+      // gp.ui.gameFinished = true;
+      // break;
+      // }
     }
   }
 
