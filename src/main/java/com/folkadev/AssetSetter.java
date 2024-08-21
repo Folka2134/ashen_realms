@@ -1,5 +1,6 @@
 package com.folkadev;
 
+import com.folkadev.object.Obj_Boots;
 import com.folkadev.object.Obj_Chest_Closed;
 import com.folkadev.object.Obj_Door_Iron;
 import com.folkadev.object.Obj_Key;
@@ -27,6 +28,10 @@ public class AssetSetter {
     gp.obj[3] = new Obj_Chest_Closed();
     gp.obj[3].worldX = 10 * gp.tileSize;
     gp.obj[3].worldY = 7 * gp.tileSize;
+
+    gp.obj[9] = new Obj_Boots();
+    gp.obj[9].worldX = 37 * gp.tileSize;
+    gp.obj[9].worldY = 41 * gp.tileSize;
 
   }
 }
