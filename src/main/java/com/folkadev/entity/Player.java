@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import com.folkadev.GamePanel;
 import com.folkadev.KeyHandler;
+import com.folkadev.object.Obj_Chest_Open;
 
 public class Player extends Entity {
 
@@ -16,7 +17,7 @@ public class Player extends Entity {
   KeyHandler keyH;
   public final int screenX;
   public final int screenY;
-  int keys = 0;
+  public int keys = 0;
 
   public Player(GamePanel gp, KeyHandler keyH) {
     this.gp = gp;
@@ -120,18 +121,28 @@ public class Player extends Entity {
         case "Key":
           keys++;
           gp.obj[index] = null;
-          System.out.println("Keys: " + keys);
+          gp.ui.displayMessage("Rusty key found");
           break;
         case "Iron Door":
           if (keys > 0) {
             gp.obj[index] = null;
             keys--;
+            gp.ui.displayMessage("Key used");
+          } else {
+            gp.ui.displayMessage("It's locked");
           }
-          System.out.println("Keys: " + keys);
           break;
         case "Boots":
           speed += 2;
           gp.obj[index] = null;
+          gp.ui.displayMessage("Speed Boots equipped");
+          break;
+        case "Chest_Closed":
+          gp.obj[index] = null;
+          gp.obj[3] = new Obj_Chest_Open();
+          gp.obj[3].worldX = 10 * gp.tileSize;
+          gp.obj[3].worldY = 7 * gp.tileSize;
+          gp.ui.gameFinished = true;
           break;
       }
     }

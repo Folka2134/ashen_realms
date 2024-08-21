@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import com.folkadev.entity.Player;
 import com.folkadev.object.SuperObject;
 import com.folkadev.tile.TileManager;
+import com.folkadev.ui.UI;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -31,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
   // FPS
   final int FPS = 60;
 
-  Thread gameThread;
+  public Thread gameThread;
 
   TileManager tileManager = new TileManager(this);
   KeyHandler keyH = new KeyHandler();
@@ -39,6 +40,7 @@ public class GamePanel extends JPanel implements Runnable {
   public CollisionChecker collisionChecker = new CollisionChecker(this);
   public Player player = new Player(this, keyH);
   public SuperObject obj[] = new SuperObject[10];
+  public UI ui = new UI(this);
 
   public GamePanel() {
     this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -110,6 +112,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
     // Draw player
     player.draw(g2);
+
+    // Draw UI
+    ui.draw(g2);
 
     g2.dispose();
   }
