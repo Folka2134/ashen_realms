@@ -17,7 +17,7 @@ public class UI {
   // map
 
   GamePanel gp;
-  Font arial_40, arial_80B;
+  Font arial_40, arial_60B;
   BufferedImage keyImage;
   int messageDuration = 0;
   public boolean messageOn = false;
@@ -27,7 +27,7 @@ public class UI {
   public UI(GamePanel gp) {
     this.gp = gp;
     arial_40 = new Font("Arial", Font.PLAIN, 40);
-    arial_80B = new Font("Arial", Font.BOLD, 80);
+    arial_60B = new Font("Arial", Font.BOLD, 60);
     Obj_Key key = new Obj_Key();
     keyImage = key.image;
   }
@@ -46,7 +46,7 @@ public class UI {
       int x;
       int y;
 
-      g2.setFont(arial_80B);
+      g2.setFont(arial_60B);
       g2.setColor(Color.green);
 
       text = "Mission Completed!";
