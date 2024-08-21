@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 import com.folkadev.GamePanel;
 import com.folkadev.KeyHandler;
 import com.folkadev.UtilityTool;
-import com.folkadev.object.Obj_Chest_Open;
 
 public class Player extends Entity {
 

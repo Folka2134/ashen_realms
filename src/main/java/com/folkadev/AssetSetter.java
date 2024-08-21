@@ -1,10 +1,5 @@
 package com.folkadev;
 
-import com.folkadev.object.Obj_Boots;
-import com.folkadev.object.Obj_Chest_Closed;
-import com.folkadev.object.Obj_Door_Iron;
-import com.folkadev.object.Obj_Key;
-
 public class AssetSetter {
   GamePanel gp;
 
